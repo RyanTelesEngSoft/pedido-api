@@ -5,6 +5,7 @@ import com.ryanteles.pedido_api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -24,5 +25,13 @@ public class ProdutoService {
 
     public List<Produto> listar(){
         return produtoRepository.findAll();
+    }
+
+    public Produto buscarPorId(Long id){
+        Optional<Produto> produto =produtoRepository.findById(id);
+
+        return produto.orElseThrow(
+                ()-> new IllegalArgumentException("Produto não encontrado!")
+        );
     }
 }

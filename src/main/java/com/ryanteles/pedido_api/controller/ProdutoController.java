@@ -5,6 +5,7 @@ import com.ryanteles.pedido_api.service.ProdutoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/produtos")
@@ -27,4 +28,8 @@ public class ProdutoController {
         return produtoService.listar();
     }
 
+    @GetMapping("/{id}")
+    public Produto buscarPorId(@PathVariable Long id){
+        return produtoService.buscarPorId(id);
+    }
 }
