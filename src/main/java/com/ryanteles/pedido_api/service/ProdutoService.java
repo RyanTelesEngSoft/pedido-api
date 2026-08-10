@@ -4,6 +4,8 @@ import com.ryanteles.pedido_api.entity.Produto;
 import com.ryanteles.pedido_api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProdutoService {
 
@@ -18,5 +20,9 @@ public class ProdutoService {
             throw new IllegalArgumentException("Voce não pode criar um produto nulo");
         }
         return produtoRepository.save(produto);
+    }
+
+    public List<Produto> listar(){
+        return produtoRepository.findAll();
     }
 }
