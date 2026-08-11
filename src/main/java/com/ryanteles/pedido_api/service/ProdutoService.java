@@ -1,6 +1,7 @@
 package com.ryanteles.pedido_api.service;
 
 import com.ryanteles.pedido_api.entity.Produto;
+import com.ryanteles.pedido_api.exception.ProdutoNotFoundException;
 import com.ryanteles.pedido_api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class ProdutoService {
         Optional<Produto> produto =produtoRepository.findById(id);
 
         return produto.orElseThrow(
-                ()-> new IllegalArgumentException("Produto não encontrado!")
+                ()-> new ProdutoNotFoundException("Produto não encontrado!")
         );
     }
 }
