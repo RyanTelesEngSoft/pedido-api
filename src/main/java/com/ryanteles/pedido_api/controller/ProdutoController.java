@@ -39,4 +39,8 @@ public class ProdutoController {
         produtoService.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{id}")
+    public Produto atualizar(@PathVariable Long id, @RequestBody Produto produto){
+       return produtoService.atualizar(id, produto);
+    }
 }
