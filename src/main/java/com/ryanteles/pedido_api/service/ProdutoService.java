@@ -29,10 +29,15 @@ public class ProdutoService {
     }
 
     public Produto buscarPorId(Long id){
-        Optional<Produto> produto =produtoRepository.findById(id);
+        Optional<Produto> produto = produtoRepository.findById(id);
 
         return produto.orElseThrow(
                 ()-> new ProdutoNotFoundException("Produto não encontrado!")
         );
+    }
+
+    public void deletarPorId (Long id){
+       produtoRepository.findById(id).orElseThrow(()-> new ProdutoNotFoundException("Produto não encontrado!"));
+       produtoRepository.deleteById(id);
     }
 }

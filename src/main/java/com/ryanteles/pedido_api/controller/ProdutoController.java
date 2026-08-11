@@ -2,6 +2,7 @@ package com.ryanteles.pedido_api.controller;
 
 import com.ryanteles.pedido_api.entity.Produto;
 import com.ryanteles.pedido_api.service.ProdutoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +32,11 @@ public class ProdutoController {
     @GetMapping("/{id}")
     public Produto buscarPorId(@PathVariable Long id){
         return produtoService.buscarPorId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPorId(@PathVariable Long id){
+        produtoService.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }
