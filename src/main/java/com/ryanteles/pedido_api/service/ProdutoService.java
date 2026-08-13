@@ -1,5 +1,6 @@
 package com.ryanteles.pedido_api.service;
 
+import com.ryanteles.pedido_api.dto.ProdutoRequestDTO;
 import com.ryanteles.pedido_api.entity.Produto;
 import com.ryanteles.pedido_api.exception.ProdutoNotFoundException;
 import com.ryanteles.pedido_api.repository.ProdutoRepository;
@@ -17,11 +18,19 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public Produto salvar(Produto produto){
+    public Produto salvar(ProdutoRequestDTO produto){
+
         if(produto == null){
             throw new IllegalArgumentException("Voce não pode criar um produto nulo");
         }
-        return produtoRepository.save(produto);
+
+        Produto produtoEntity = new Produto();
+
+        produtoEntity.setNome(produto.getNome());
+        produtoEntity.setPreco(produto.getPreco());
+        produtoEntity.setEstoque(produto.getEstoque());
+
+        return produtoRepository.save(produtoEntity);
     }
 
     public List<Produto> listar(){
@@ -48,6 +57,6 @@ public class ProdutoService {
             produtoExistente.setPreco(produtoAtualizado.getPreco());
             produtoExistente.setEstoque(produtoAtualizado.getEstoque());
             return produtoRepository.save(produtoAtualizado);
-            
+
     }
 }
