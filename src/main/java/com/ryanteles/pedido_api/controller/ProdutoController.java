@@ -1,6 +1,7 @@
 package com.ryanteles.pedido_api.controller;
 
 import com.ryanteles.pedido_api.dto.ProdutoRequestDTO;
+import com.ryanteles.pedido_api.dto.ProdutoResponseDTO;
 import com.ryanteles.pedido_api.entity.Produto;
 import com.ryanteles.pedido_api.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -25,12 +26,12 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public List<Produto> listar(){
+    public List<ProdutoResponseDTO> listar(){
         return produtoService.listar();
     }
 
     @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Long id){
+    public ProdutoResponseDTO buscarPorId(@PathVariable Long id){
         return produtoService.buscarPorId(id);
     }
 
@@ -39,8 +40,8 @@ public class ProdutoController {
         produtoService.deletarPorId(id);
         return ResponseEntity.noContent().build();
     }
-    /*@PutMapping("/{id}")
-    public Produto atualizar(@PathVariable Long id, @RequestBody ProdutoRequestDTO produto){
+    @PutMapping("/{id}")
+    public ProdutoResponseDTO atualizar( @PathVariable Long id, @Valid @RequestBody ProdutoRequestDTO produto){
        return produtoService.atualizar(id, produto);
-    }*/
+    }
 }

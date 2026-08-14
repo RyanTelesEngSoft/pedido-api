@@ -1,11 +1,13 @@
 package com.ryanteles.pedido_api.service;
 
 import com.ryanteles.pedido_api.dto.ProdutoRequestDTO;
+import com.ryanteles.pedido_api.dto.ProdutoResponseDTO;
 import com.ryanteles.pedido_api.entity.Produto;
 import com.ryanteles.pedido_api.exception.ProdutoNotFoundException;
 import com.ryanteles.pedido_api.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,15 @@ public class ProdutoService {
 
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
+    }
+
+    public ProdutoResponseDTO produtoResponseDTO(Produto produto){
+        ProdutoResponseDTO produtoResponseDTO = new ProdutoResponseDTO();
+        produtoResponseDTO.setId(produto.getId());
+        produtoResponseDTO.setNome(produto.getNome());
+        produtoResponseDTO.setPreco(produto.getPreco());
+        produtoResponseDTO.setEstoque(produto.getEstoque());
+        return produtoResponseDTO;
     }
 
     public Produto salvar(ProdutoRequestDTO produto){
@@ -33,16 +44,22 @@ public class ProdutoService {
         return produtoRepository.save(produtoEntity);
     }
 
-    public List<Produto> listar(){
-        return produtoRepository.findAll();
+    public List<ProdutoResponseDTO> listar(){
+        List<Produto> produtos = produtoRepository.findAll();
+        List<ProdutoResponseDTO> produtosResponseDTO = new ArrayList<>();
+        for( Produto produto : produtos){
+            produtosResponseDTO.add(produtoResponseDTO(produto));
+        }
+        return produtosResponseDTO;
     }
 
-    public Produto buscarPorId(Long id){
-        Optional<Produto> produto = produtoRepository.findById(id);
+    public ProdutoResponseDTO buscarPorId(Long id){
+        Optional<Produto> produtoOptional = produtoRepository.findById(id);
 
-        return produto.orElseThrow(
+        Produto produto = produtoOptional.orElseThrow(
                 ()-> new ProdutoNotFoundException("Produto não encontrado!")
         );
+        return produtoResponseDTO(produto);
     }
 
     public void deletarPorId (Long id){
@@ -50,13 +67,13 @@ public class ProdutoService {
        produtoRepository.deleteById(id);
     }
 
-    public Produto atualizar(Long id, Produto produtoAtualizado){
+    public ProdutoResponseDTO atualizar(Long id, ProdutoRequestDTO produtoAtualizado){
       Produto produtoExistente =  produtoRepository.findById(id).orElseThrow(() -> new ProdutoNotFoundException("Produto não encontrado!"));
 
             produtoExistente.setNome(produtoAtualizado.getNome());
             produtoExistente.setPreco(produtoAtualizado.getPreco());
             produtoExistente.setEstoque(produtoAtualizado.getEstoque());
-            return produtoRepository.save(produtoAtualizado);
-
+            produtoRepository.save(produtoExistente);
+            return produtoResponseDTO(produtoExistente);
     }
 }
