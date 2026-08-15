@@ -29,7 +29,7 @@ public class ProdutoService {
         return produtoResponseDTO;
     }
 
-    public Produto salvar(ProdutoRequestDTO produto){
+    public ProdutoResponseDTO salvar(ProdutoRequestDTO produto){
 
         if(produto == null){
             throw new IllegalArgumentException("Voce não pode criar um produto nulo");
@@ -41,7 +41,8 @@ public class ProdutoService {
         produtoEntity.setPreco(produto.getPreco());
         produtoEntity.setEstoque(produto.getEstoque());
 
-        return produtoRepository.save(produtoEntity);
+        produtoRepository.save(produtoEntity);
+        return produtoResponseDTO(produtoEntity);
     }
 
     public List<ProdutoResponseDTO> listar(){
