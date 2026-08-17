@@ -1,5 +1,6 @@
 package com.ryanteles.pedido_api.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,5 +26,10 @@ public class GlobalExceptionHandler {
             campos.put(erro.getField(), erro.getDefaultMessage());
        }
         return ResponseEntity.status(400).body(campos);
+   }
+
+   @ExceptionHandler(ClienteNotFoundException.class)
+    public ResponseEntity<String> tratarClienteNotFoundException(ClienteNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
    }
 }

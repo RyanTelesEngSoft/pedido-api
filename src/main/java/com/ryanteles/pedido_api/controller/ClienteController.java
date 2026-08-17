@@ -32,4 +32,20 @@ public class ClienteController {
     public List<ClienteResponseDTO> listar(){
        return clienteService.listar();
     }
+
+    @GetMapping("/{id}")
+    public ClienteResponseDTO buscarPorId(@PathVariable Long id){
+       return clienteService.buscarPorId(id);
+    }
+
+    @PutMapping("/{id}")
+    public ClienteResponseDTO atualizar(@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO cliente){
+        return clienteService.atualizar(id, cliente);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eletar (@PathVariable Long id){
+        clienteService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -3,11 +3,13 @@ package com.ryanteles.pedido_api.service;
 import com.ryanteles.pedido_api.dto.ClienteRequestDTO;
 import com.ryanteles.pedido_api.dto.ClienteResponseDTO;
 import com.ryanteles.pedido_api.entity.Cliente;
+import com.ryanteles.pedido_api.exception.ClienteNotFoundException;
 import com.ryanteles.pedido_api.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -49,5 +51,27 @@ public class ClienteService {
         return clientesResponseDTO;
     }
 
-    
+    public ClienteResponseDTO buscarPorId (Long id){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        Cliente cliente = clienteOptional.orElseThrow(
+                ()-> new ClienteNotFoundException("Cliente não encontrado")
+        );
+        return clienteResponseDTO(cliente);
+    }
+
+    public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO clienteAtualizado){
+        Cliente clienteExistente = clienteRepository.findById(id).orElseThrow(()-> new ClienteNotFoundException("Cliente não encontrado"));
+
+        clienteExistente.setNome(clienteAtualizado.getNome());
+        clienteExistente.setEmail(clienteAtualizado.getEmail());
+        clienteExistente.setTelefone(clienteAtualizado.getTelefone());
+
+        clienteRepository.save(clienteExistente);
+        return clienteResponseDTO(clienteExistente);
+    }
+
+    public void deletar(Long id){
+        clienteRepository.findById(id).orElseThrow(()-> new ClienteNotFoundException("Cliente não encontrado"));
+        clienteRepository.deleteById(id);
+    }
 }
