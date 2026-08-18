@@ -6,30 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "pedidos")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Produto {
+public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nome;
+    private LocalDateTime data;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal preco;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
-    @Column(nullable = false)
-    private Integer estoque;
-
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
 }
